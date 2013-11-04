@@ -1,2 +1,0 @@
-- Initialize the DB by parsing LIAFA/PPS directories + some exceptions
-- Suggestions while typing
