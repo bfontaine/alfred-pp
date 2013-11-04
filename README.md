@@ -1,7 +1,7 @@
 # pp (Alfred workflow)
 
-This is an Alfred workflow for a quick access to personal homepages of teachers
-from Paris Diderot University.
+This is an Alfred workflow for a quick access to personal homepages of CS
+teachers from Paris Diderot University.
 
 ## Usage
 
