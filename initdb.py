@@ -1,7 +1,19 @@
-#! /usr/bin/env python
-# -*- coding: UTF-8 -*-
+from alp import Request, jsonDump, jsonLoad
 
-from alp import Request, jsonDump
+JSON_LIST='people.json'
+
+def fmt_url(u, base=''):
+    if u.startswith('http') or base == '':
+        return u
+
+    if u.startswith('/'):
+        u = u[1:]
+
+    if base.endswith('/'):
+        return base + u
+
+    return base[:-1] + u
+
 
 def parse_liafa():
     """
@@ -9,45 +21,58 @@ def parse_liafa():
     """
     people_list = []
     base = 'http://www.liafa.univ-paris-diderot.fr/'
-    p_sel = 'blockquote > table tr.fondgristresc td:first-child a'
-    page = Request(base + '/web9/membreliafa/listalpha_fr.php')
+    tr_sel = 'blockquote > table tr.fondgristresc' # td:first-child a'
+    page = Request(fmt_url('/web9/membreliafa/listalpha_fr.php', base))
     page.download()
     page = page.souper()
-    urls = [p.get('href') for p in page.find_all(p_sel)]
+    for tr in page.select(tr_sel):
+        links = tr.select('td a')
+        if (len(links) == 0):
+            continue
 
-    for u in urls:
+        u = links[0].get('href')
         if u == None:
             continue
         p = {}
         page = Request(base + u)
         page.download()
         page = page.souper()
-        pp = page.find('table.texte li a.bleu')
+        pp = page.select('table.texte li a.bleu')
         if (pp):
-            p['url'] = pp.get('href')
-            p['name'] = page.find('blockquote h2').get_text().strip()
+            pp = pp[0]
+            p['url'] = fmt_url(pp.get('href'), base)
+            p['name'] = page.select('blockquote h2')[0].get_text().strip()
             p['icon'] = 'liafa.png'
-            people_list.append(pp)
+            people_list.append(p)
 
     return people_list
+
 
 def parse_pps():
     """
     Return a list of people from PPS
     """
     people_list = []
-    base = 'http://www.pps.univ-paris-diderot.fr/'
+    base = 'http://www.pps.univ-paris-diderot.fr'
     page = Request(base + '/membres')
     page.download()
     page = page.souper()
-    pp = page.find('table a.ocsimore_phrasing_link')
+    pp = page.select('table a.ocsimore_phrasing_link')
     return [{
-        'name': pp.get_text().strip(),
-        'url': base+pp.get('href'),
-        'icon': 'pps.png'} for p in pp]
+        'name': p.get_text().strip(),
+        'url': fmt_url(p.get('href'), base),
+        'icon': 'pps.png'} for p in pp] if pp else []
 
 def parse_all():
     return parse_liafa()+parse_pps()
 
 def save_list():
-    jsonDump(parse_all(), "people_list.json")
+    p = parse_all()
+    jsonDump(p, JSON_LIST)
+    return p
+
+def get_list():
+    li = jsonLoad(JSON_LIST, default=[])
+    if len(li) == 0:
+        return save_list()
+    return li
