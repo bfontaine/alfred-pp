@@ -50,7 +50,7 @@ def parse_liafa():
     """
     Return a list of people from LIAFA.
     """
-    icon = alp.local('liafa.png')
+    icon = 'liafa.png'
     people_list = []
     base = 'http://www.liafa.univ-paris-diderot.fr/'
     tr_sel = 'blockquote > table tr.fondgristresc' # td:first-child a'
