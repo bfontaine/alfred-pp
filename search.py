@@ -6,6 +6,9 @@ from initdb import get_list
 def cmd_arg(a):
     return 'cmd:' + a
 
+def url_arg(u):
+    return 'url:' + u
+
 def cmd_title(c):
     return 'pp > ' + c
 
@@ -40,13 +43,20 @@ def main():
 
     li = get_list()
 
-    ppl = alp.fuzzy_search(' '.join(argv[1:]), li, lambda x: x['name'])
+    ppl = alp.fuzzy_search(' '.join(argv[1:]), li, lambda x: x['fuzzy'])
 
     for p in ppl:
-        i = Item(title=p['name'], subtitle='', \
-                icon=p['icon'], fileIcon=True, \
-                autocomplete=p['name'], valid=True, arg='url:'+p['url'])
-        items.append(i)
+        kw = {}
+        kw['title'] = p['name']
+        kw['autocomplete'] = p['name']
+        kw['subtitle'] = p['info'] if 'info' in p else ''
+        if 'url' in p:
+            kw['valid'] = True
+            kw['arg'] = url_arg(p['url'])
+        else:
+            kw['valid'] = False
+
+        items.append(Item(**kw))
 
     alp.feedback(items)
 
