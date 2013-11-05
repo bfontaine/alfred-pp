@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 This module provide utilities to update the local list of people. This list is
 stored as JSON in people.json, and each person is a dict with these keys:
@@ -25,7 +26,7 @@ def fmt_name(n):
     """
     Format a name
     """
-    return re.sub('([A-Z]{3,})', lambda m: m.group(1).capitalize(), n)
+    return re.sub(u'([ÉA-Z]{3,})', lambda m: m.group(1).capitalize(), n)
 
 def text(el):
     """
@@ -44,12 +45,13 @@ def mk_fuzzy(p):
         urlname = re.search('/~(\w+)', p['url'])
         if urlname:
             els.append(urlname.group(1))
-    return els.join(' ## ')
+    return ' ## '.join(els)
 
 def parse_liafa():
     """
     Return a list of people from LIAFA.
     """
+    alp.log('parsing liafa')
     icon = 'liafa.png'
     people_list = []
     base = 'http://www.liafa.univ-paris-diderot.fr/'
@@ -79,9 +81,10 @@ def parse_liafa():
             p['url'] = urljoin(base, pp.get('href'))
             p['name'] = fmt_name(text(page.select('blockquote h2')[0]))
             p['icon'] = icon
-            p['fuzzy'] = p['name']
+            p['fuzzy'] = mk_fuzzy(p)
             people_list.append(p)
 
+    alp.log('done liafa')
     return people_list
 
 
@@ -89,6 +92,7 @@ def parse_pps():
     """
     Return a list of people from PPS
     """
+    alp.log('parsing pps')
     icon = 'pps.png'
     people_list = []
     base = 'http://www.pps.univ-paris-diderot.fr'
@@ -104,7 +108,7 @@ def parse_pps():
         p = {}
         p['url']  = urljoin(base, link.get('href'))
         p['name'] = fmt_name(text(link))
-        p['fuzzy'] = p['name']
+        p['fuzzy'] = mk_fuzzy(p)
         p['icon'] = icon
 
         tds = tr.find_all('td')
@@ -114,6 +118,7 @@ def parse_pps():
 
         people_list.append(p)
 
+    alp.log('done pps')
     return people_list
 
 def parse_gallium():
@@ -121,6 +126,7 @@ def parse_gallium():
     Return a list of people from Gallium. Only a part of them are teaching
     at Paris Diderot.
     """
+    alp.log('parsing gallium')
     icon = 'inria.png'
     people_list = []
     base = 'http://gallium.inria.fr'
@@ -131,15 +137,23 @@ def parse_gallium():
     for link in links:
         p = { 'name': text(link), 'url': urljoin(base, link.get('href')) }
         p['icon'] = icon
+        p['fuzzy'] = mk_fuzzy(p)
         people_list.append(p)
 
+    alp.log('done gallium')
     return people_list
 
 def parse_others():
     """
     Return a list of manually-added people
     """
-    return alp.jsonLoad(alp.local('others.json'), [])
+    alp.log('parsing others')
+    li = alp.jsonLoad(alp.local('others.json'), [])
+    for p in li:
+        if 'fuzzy' not in p:
+            p['fuzzy'] = mk_fuzzy(p)
+    alp.log('done others')
+    return li
 
 def parse_all():
     return parse_liafa()+parse_pps()+parse_gallium()+parse_others()
