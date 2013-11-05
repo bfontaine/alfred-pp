@@ -4,7 +4,13 @@ from initdb import save_list
 from subprocess import Popen
 
 def do_cmd(cmd):
-    pass # TODO
+    if cmd == 'init':
+        n = len(save_list())
+        title = 'Alfred PP'
+        subtitle = 'People database updated'
+        text = str(n) + ' teachers in the database.'
+        n = alp.Notification()
+        n.notify(title, subtitle, text)
 
 def go_url(u):
     Popen(['osascript', '-e', 'open location "%s"' % u])
