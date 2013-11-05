@@ -43,6 +43,10 @@ def main():
 
     li = get_list()
 
+    for p in li:
+        if 'fuzzy' not in p:
+            p['fuzzy'] = p['name']
+
     ppl = alp.fuzzy_search(' '.join(argv[1:]), li, lambda x: x['fuzzy'])
 
     for p in ppl:

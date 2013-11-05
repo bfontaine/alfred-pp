@@ -116,8 +116,27 @@ def parse_pps():
 
     return people_list
 
+def parse_gallium():
+    """
+    Return a list of people from Gallium. Only a part of them are teaching
+    at Paris Diderot.
+    """
+    icon = 'inria.png'
+    people_list = []
+    base = 'http://gallium.inria.fr'
+    page = Request(base + '/members.html')
+    page.download()
+    page = page.souper()
+    links = page.select('#columnA_2columns a')
+    for link in links:
+        p = { 'name': text(link), 'url': urljoin(base, link.get('href')) }
+        p['icon'] = icon
+        people_list.append(p)
+
+    return people_list
+
 def parse_all():
-    return parse_liafa()+parse_pps()
+    return parse_liafa()+parse_pps()+parse_gallium()
 
 def save_list():
     p = parse_all()
