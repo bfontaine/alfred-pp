@@ -8,6 +8,8 @@ teachers from Paris Diderot University.
 Type `pp` followed by your query. The first time, you'll have to wait a little
 to have your local people database populated.
 
+![example](https://f.cloud.github.com/assets/1334295/1474180/2fbc4e02-462a-11e3-9397-ce6e99529150.png)
+
 To re-populate the database, use `pp > init`.
 
 ## Install
