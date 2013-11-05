@@ -56,6 +56,10 @@ def main():
         else:
             kw['valid'] = False
 
+        if 'icon' in p:
+            kw['icon'] = alp.local(p['icon'])
+            #kw['fileIcon'] = True
+
         items.append(Item(**kw))
 
     alp.feedback(items)

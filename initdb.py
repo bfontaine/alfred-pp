@@ -79,7 +79,6 @@ def parse_liafa():
             p['url'] = urljoin(base, pp.get('href'))
             p['name'] = fmt_name(text(page.select('blockquote h2')[0]))
             p['icon'] = icon
-            p['fileIcon'] = True
             p['fuzzy'] = p['name']
             people_list.append(p)
 
@@ -90,7 +89,7 @@ def parse_pps():
     """
     Return a list of people from PPS
     """
-    icon = alp.local('pps.png')
+    icon = 'pps.png'
     people_list = []
     base = 'http://www.pps.univ-paris-diderot.fr'
     page = Request(base + '/membres')
@@ -107,7 +106,6 @@ def parse_pps():
         p['name'] = fmt_name(text(link))
         p['fuzzy'] = p['name']
         p['icon'] = icon
-        p['fileIcon'] = True
 
         tds = tr.find_all('td')
         if (len(tds) >= 4):
