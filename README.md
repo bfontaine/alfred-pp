@@ -5,16 +5,20 @@ teachers from Paris Diderot University.
 
 ## Usage
 
-In Alfred, use `pp > init` the first time to initialize the database.Then,
-typing:
+Type `pp` followed by your query. The first time, you'll have to wait a little
+to have your local people database populated.
 
-    pp <name of teacher>
-
-will open the page in your favorite browser.
+To re-populate the database, use `pp > init`.
 
 ## Install
 
-(TODO)
+You need to have the [powerpack][].
+
+Download the latest `.alfredworkflow` file from the [releases page][releases]
+and open it with Alfred.
+
+[powerpack]: http://www.alfredapp.com/powerpack/
+[releases]: https://github.com/bfontaine/alfred-pp/releases
 
 ## More info
 
