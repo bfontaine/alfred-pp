@@ -36,7 +36,8 @@ def text(el):
 
 def mk_fuzzy(p):
     """
-    Return the 'fuzzy' field of a person dict
+    Return the 'fuzzy' field of a person dict. This is a string containing
+    various versions of the person's name for easier searches.
     """
     els = []
     els.append(p['name'])
@@ -45,7 +46,13 @@ def mk_fuzzy(p):
         urlname = re.search('/~(\w+)', p['url'])
         if urlname:
             els.append(urlname.group(1))
-    return ' ## '.join(els)
+
+    # siglum, e.g. Foo Bar-Qux -> fbq
+    sig = ''.join(re.findall(u'[A-ZÉ]', p['name']))
+    if sig:
+        els.append(sig)
+
+    return ' # '.join(els)
 
 def parse_liafa():
     """

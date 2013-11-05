@@ -25,3 +25,9 @@ and open it with Alfred.
 ## More info
 
 <b>pp</b> comes from “<b>p</b>ersonal [home]<b>p</b>age”.
+
+## Changelog
+
+### v0.1.1 (in development)
+
+- Search by sigla added (e.g. `pp jd` matches <i>Jack Dorsey</i>)
