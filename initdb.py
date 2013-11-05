@@ -8,7 +8,7 @@ path), 'info' (more info about this person; may be empty), and an optional key,
 
 import re
 import alp
-from alp import Request, jsonDump, jsonLoad
+from alp import Request
 from unidecode import unidecode
 from urlparse import urljoin
 
@@ -135,16 +135,22 @@ def parse_gallium():
 
     return people_list
 
+def parse_others():
+    """
+    Return a list of manually-added people
+    """
+    return alp.jsonLoad(alp.local('others.json'), [])
+
 def parse_all():
-    return parse_liafa()+parse_pps()+parse_gallium()
+    return parse_liafa()+parse_pps()+parse_gallium()+parse_others()
 
 def save_list():
     p = parse_all()
-    jsonDump(p, JSON_LIST)
+    alp.jsonDump(p, JSON_LIST)
     return p
 
 def get_list():
-    li = jsonLoad(JSON_LIST, default=[])
+    li = alp.jsonLoad(JSON_LIST, default=[])
     if len(li) == 0:
         return save_list()
     return li
