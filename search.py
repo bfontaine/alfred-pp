@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 import alp
 from alp import Item
+from unidecode import unidecode
 from sys import argv as sys_argv
 from initdb import get_list
 
@@ -47,7 +49,11 @@ def main():
         if 'fuzzy' not in p:
             p['fuzzy'] = p['name']
 
-    ppl = alp.fuzzy_search(' '.join(argv[1:]), li, lambda x: x['fuzzy'])
+    u2ascii = lambda s: unidecode(s.decode('utf-8'))
+
+    qry = ' '.join(map(u2ascii, argv[1:])).strip()
+
+    ppl = alp.fuzzy_search(qry, li, lambda x: x['fuzzy'])
 
     for p in ppl:
         kw = {}
