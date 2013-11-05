@@ -31,3 +31,4 @@ and open it with Alfred.
 ### v0.1.1 (in development)
 
 - Search by sigla added (e.g. `pp jd` matches <i>Jack Dorsey</i>)
+- Added a `readme` command to open the project’s README in the browser

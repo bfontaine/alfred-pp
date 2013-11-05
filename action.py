@@ -11,6 +11,8 @@ def do_cmd(cmd):
         text = str(n) + ' teachers in the database.'
         n = alp.Notification()
         n.notify(title, subtitle, text)
+    elif cmd == 'readme':
+        go_url('https://github.com/bfontaine/alfred-pp#readme')
 
 def go_url(u):
     Popen(['osascript', '-e', 'open location "%s"' % u])

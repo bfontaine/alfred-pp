@@ -16,7 +16,8 @@ def cmd_title(c):
 
 def main():
     cmds = {
-        'init': 'initialize the DB'
+        'init': 'initialize the DB',
+        'readme': 'show the project\'s README'
     }
 
     argv = sys_argv
