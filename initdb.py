@@ -26,7 +26,7 @@ def fmt_name(n):
     """
     Format a name
     """
-    return re.sub(u'([ÉA-Z]{3,})', lambda m: m.group(1).capitalize(), n)
+    return re.sub(u'([ÉA-Z]{2,})', lambda m: m.group(1).capitalize(), n)
 
 def text(el):
     """
