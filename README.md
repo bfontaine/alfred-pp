@@ -3,6 +3,11 @@
 This is an Alfred workflow for a quick access to personal homepages of CS
 teachers from Paris Diderot University.
 
+**Note**: This is not maintained anymore. Check the [Web version][webpp] which
+works everywhere and is more up-to-date.
+
+[webpp]: https://github.com/bfontaine/web-pp
+
 ## Usage
 
 Type `pp` followed by your query. The first time, you'll have to wait a little
